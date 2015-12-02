@@ -1,13 +1,14 @@
 #!/usr/bin/env ruby
 
 require 'open-uri'
+require 'benchmark'
 
 def surface_area(l, w, h)
   2*l*w + 2*w*h + 2*h*l
 end
 
+# slack = area of the smallest side
 def slack(l, w, h)
-  # slack = area of the smallest side
   [l, w, h].sort.take(2).reduce(:*)
 end
 
@@ -15,16 +16,18 @@ def parse_box_dimensions(box)
   box.split('x').map(&:to_i)
 end
 
-def required_wrapping_paper(l, w, h)
+def wrapping_paper_for(box)
+  l, w, h = parse_box_dimensions(box)
   surface_area(l, w, h) + slack(l, w, h)
 end
 
-INPUT = "./day-2-input.txt"
-File.open(INPUT){|file|
+#time = Benchmark.realtime do
 
-  puts file.readlines.map{|box|
-    l, w, h = parse_box_dimensions(box)
-    required_wrapping_paper(l, w, h)
-  }.reduce(:+)
+  INPUT_FILE = "./day-2-input.txt"
+  total_wrapping_paper = File.open(INPUT_FILE){|file|
+    file.readlines.map{|box| wrapping_paper_for(box)}.reduce(:+)
+  }
+  puts total_wrapping_paper
 
-}
+#end
+#puts "Time elapsed #{time*1000} milliseconds"
