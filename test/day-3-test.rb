@@ -1,7 +1,6 @@
 require 'minitest/autorun'
 require 'open-uri'
-require './day-3-1.rb'
-#require './day-2-2.rb'
+require './day-3.rb'
 
 class TestAdventOfCodeDay3 < Minitest::Test
   def setup

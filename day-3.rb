@@ -26,8 +26,10 @@ def unique_houses_visited_by_santa(input)
 end
 
 def unique_houses_visited_by_santa_and_robosanta(input)
-  santas_directions     = input.chars.values_at( *(0..input.length-1).select(&:even?) ).join
-  robosantas_directions = input.chars.values_at( *(0..input.length-1).select(&:odd?) ).join
+  even_indexes = (0..input.length-1).select(&:even?)
+  odd_indexes  = (0..input.length-1).select(&:odd?)
+  santa     = input.chars.values_at( *even_indexes ).join
+  robosanta = input.chars.values_at( *odd_indexes  ).join
 
-  (deliver_presents(santas_directions) + deliver_presents(robosantas_directions)).uniq.size
+  (deliver_presents(santa) + deliver_presents(robosanta)).uniq.size
 end
