@@ -4,15 +4,15 @@ def move_from(house, direction)
   x, y = house
   case direction
   when '^'
-    to_house = [ x, y+1 ]
+    house = [ x, y+1 ]
   when 'v'
-    to_house = [ x, y-1 ]
+    house = [ x, y-1 ]
   when '>'
-    to_house = [ x+1, y ]
+    house = [ x+1, y ]
   when '<'
-    to_house = [ x-1, y ]
+    house = [ x-1, y ]
   end
-  to_house
+  house
 end
 
 def deliver_presents(input)
@@ -20,7 +20,7 @@ def deliver_presents(input)
   houses = [ house ]
   input.strip.each_char { |direction|
     house = move_from(house, direction)
-    houses.push house
+    houses << house
   }
   houses
 end
