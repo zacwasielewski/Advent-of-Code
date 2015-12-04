@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 
 def move_from(house, direction)
-  x = house[0]
-  y = house[1]
+  x, y = house
   case direction
   when '^'
     to_house = [ x, y+1 ]
