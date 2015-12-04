@@ -21,11 +21,13 @@ def deliver_presents(input)
   houses
 end
 
-def get_houses_visited(input)
-  houses = deliver_presents(input)
-  houses.uniq
+def unique_houses_visited_by_santa(input)
+  deliver_presents(input).uniq.size
 end
 
-def number_of_houses_delivered_presents(input)
-  get_houses_visited(input).size
+def unique_houses_visited_by_santa_and_robosanta(input)
+  santas_directions     = input.chars.values_at( *(0..input.length-1).select(&:even?) ).join
+  robosantas_directions = input.chars.values_at( *(0..input.length-1).select(&:odd?) ).join
+
+  (deliver_presents(santas_directions) + deliver_presents(robosantas_directions)).uniq.size
 end
