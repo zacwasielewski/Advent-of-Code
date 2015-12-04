@@ -1,22 +1,27 @@
 #!/usr/bin/env ruby
 
+def move_from(house, direction)
+  x = house[0]
+  y = house[1]
+  case direction
+  when '^'
+    to_house = [ x, y+1 ]
+  when 'v'
+    to_house = [ x, y-1 ]
+  when '>'
+    to_house = [ x+1, y ]
+  when '<'
+    to_house = [ x-1, y ]
+  end
+  to_house
+end
+
 def deliver_presents(input)
-  current_house = [0, 0]
-  houses = [ current_house ]
-  input.each_char { |chr|
-    x = current_house[0]
-    y = current_house[1]
-    case chr
-    when '^'
-      current_house = [ x, y+1 ]
-    when 'v'
-      current_house = [ x, y-1 ]
-    when '>'
-      current_house = [ x+1, y ]
-    when '<'
-      current_house = [ x-1, y ]
-    end
-    houses.push current_house
+  house = [0, 0]
+  houses = [ house ]
+  input.strip.each_char { |direction|
+    house = move_from(house, direction)
+    houses.push house
   }
   houses
 end
