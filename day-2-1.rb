@@ -1,10 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'open-uri'
-require 'benchmark'
-
-INPUT_FILE = "./day-2-input.txt"
-
 def surface_area(l, w, h)
   2*l*w + 2*w*h + 2*h*l
 end
@@ -23,7 +18,6 @@ def wrapping_paper_for(box)
   surface_area(l, w, h) + slack(l, w, h)
 end
 
-total_wrapping_paper = File.open(INPUT_FILE){|file|
-  file.readlines.map{|box| wrapping_paper_for(box)}.reduce(:+)
-}
-puts total_wrapping_paper
+def total_wrapping_paper(input)
+  input.readlines.map{|box| wrapping_paper_for(box)}.reduce(:+)
+end
