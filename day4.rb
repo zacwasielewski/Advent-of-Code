@@ -8,19 +8,24 @@ class Day4
   end
 
   def lowest_number_to_produce_adventcoin
-    adventcoins.first(1).at(0)
+    adventcoin_producers(default_filter).first(1).at(0)
   end
 
   def lowest_number_to_produce_adventcoin6
-    adventcoins('000000').first(1).at(0)
+    filter = -> (s){ s.start_with? '000000' }
+    adventcoin_producers(filter).first(1).at(0)
   end
 
   private
 
-  def adventcoins(prefix = '00000')
+  def adventcoin_producers(filter)
     (1..Float::INFINITY).lazy.find_all { |i|
-      md5 = Digest::MD5.hexdigest(@secret_key + i.to_s)
-      md5[0, prefix.length] == prefix
+      hash = Digest::MD5.hexdigest(@secret_key + i.to_s)
+      filter.call(hash)
     }
+  end
+
+  def default_filter
+    -> (s){ s.start_with? '00000' }
   end
 end
