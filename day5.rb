@@ -1,23 +1,17 @@
 #!/usr/bin/env ruby
 
-require 'digest/md5'
-
 module Day5
-
-  def self.count_nice_strings(input)
+  def self.solve_part_1(input)
     input.strip.split("\n").select{|str|
       MoralString.new(str).nice?
     }.length
   end
 
-  def self.count_nicer_strings(input)
-    nice = 0
-    naughty = 0
+  def self.solve_part_2(input)
     input.strip.split("\n").select{|str|
       BetterMoralString.new(str).nice?
     }.length
   end
-
 end
 
 class MoralString < String
