@@ -16,11 +16,10 @@ class TestDay5 < Minitest::Test
   end
 
   def test_part_2
-    assert BetterMoralString.new('qjhvhaaatzxzqqjkmpb').naughty?
     assert BetterMoralString.new('qjhvhtzxzqqjkmpb').nice?
     assert BetterMoralString.new('xxyxx').nice?
     assert BetterMoralString.new('uurcxstgmygtbstg').naughty?
     assert BetterMoralString.new('ieodomkazucvgmuy').naughty?
-    assert_equal 12345678, Day5.count_nicer_strings2(@input)
+    assert_equal 51, Day5.count_nicer_strings(@input)
   end
 end

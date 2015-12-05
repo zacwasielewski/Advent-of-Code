@@ -11,6 +11,8 @@ module Day5
   end
 
   def self.count_nicer_strings(input)
+    nice = 0
+    naughty = 0
     input.strip.split("\n").select{|str|
       BetterMoralString.new(str).nice?
     }.length
@@ -48,8 +50,8 @@ end
 class BetterMoralString < String
 
   def nice?
-    #puts self
-    any_repeated_nonoverlapping_letter_pairs?
+    any_repeated_nonoverlapping_letter_pairs? &&
+      any_letters_with_identical_neighbors?
   end
 
   def naughty?
@@ -59,24 +61,26 @@ class BetterMoralString < String
   private
 
   def any_repeated_nonoverlapping_letter_pairs?
-    return false if any_overlapping_letter_pairs?
-    pairs = letter_pairs
-    pairs.each_with_index{ |current_pair, i|
-      compare_to_pairs = pairs.drop(i+1)
-      return true if compare_to_pairs.include? current_pair
-    }
-    false
+    letter_pairs.map{|pair| self.scan(pair).size > 1 }.any?
   end
 
-  def any_overlapping_letter_pairs?
-    letter_pairs.chunk{|p| p}.map{|_, pairs| pairs.size }.max > 1
+  def any_letters_with_identical_neighbors?
+    letters.each_cons(3).any? {|n| n[0] == n[2] }
   end
+
+  def letter_pairs
+    letters.each_cons(2).map(&:join)
+  end
+
+  def letters
+    self.split('')
+  end
+
+  #def any_overlapping_letter_pairs?
+  #  letter_pairs.chunk{|p| p}.map{|_, pairs| pairs.size }.max > 1
+  #end
 
   #def remove_consecutive_duplicates(arr)
   #  arr.chunk{|x| x}.map(&:first)
   #end
-
-  def letter_pairs
-    self.split('').each_cons(2).map(&:join)
-  end
 end
