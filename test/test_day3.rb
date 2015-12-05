@@ -1,10 +1,10 @@
 require 'minitest/autorun'
 require 'open-uri'
-require './day-3.rb'
+require './day3.rb'
 
-class TestAdventOfCodeDay3 < Minitest::Test
+class TestDay3 < Minitest::Test
   def setup
-    @input_file = "./input/day-3-input.txt"
+    @input_file = "./input/input_day3.txt"
     @input = File.open(@input_file).read
   end
 

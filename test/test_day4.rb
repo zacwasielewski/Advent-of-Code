@@ -1,7 +1,7 @@
 require 'minitest/autorun'
-require './day-4.rb'
+require './day4.rb'
 
-class TestAdventOfCodeDay4 < Minitest::Test
+class TestDay4 < Minitest::Test
   def setup
   end
 
