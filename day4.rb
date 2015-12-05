@@ -2,17 +2,25 @@
 
 require 'digest/md5'
 
-def adventcoins(secret_key, prefix = '00000')
-  (1..Float::INFINITY).lazy.find_all { |i|
-    md5 = Digest::MD5.hexdigest(secret_key + i.to_s)
-    md5[0, prefix.length] == prefix
-  }
-end
+class Day4
+  def initialize(secret_key)
+    @secret_key = secret_key
+  end
 
-def first_adventcoin_for(secret_key)
-  adventcoins(secret_key).first(1).at(0)
-end
+  def lowest_number_to_produce_adventcoin
+    adventcoins.first(1).at(0)
+  end
 
-def first_adventcoin6_for(secret_key)
-  adventcoins(secret_key, '000000').first(1).at(0)
+  def lowest_number_to_produce_adventcoin6
+    adventcoins('000000').first(1).at(0)
+  end
+
+  private
+
+  def adventcoins(prefix = '00000')
+    (1..Float::INFINITY).lazy.find_all { |i|
+      md5 = Digest::MD5.hexdigest(@secret_key + i.to_s)
+      md5[0, prefix.length] == prefix
+    }
+  end
 end
