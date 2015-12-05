@@ -69,12 +69,4 @@ class BetterMoralString < String
   def letters
     self.split('')
   end
-
-  #def any_overlapping_letter_pairs?
-  #  letter_pairs.chunk{|p| p}.map{|_, pairs| pairs.size }.max > 1
-  #end
-
-  #def remove_consecutive_duplicates(arr)
-  #  arr.chunk{|x| x}.map(&:first)
-  #end
 end
