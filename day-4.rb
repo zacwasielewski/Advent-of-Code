@@ -9,14 +9,10 @@ def adventcoins(secret_key, prefix = '00000')
   }
 end
 
-def adventcoins_for(secret_key, prefix = nil)
-  adventcoins(secret_key, prefix).first(num)
-end
-
 def first_adventcoin_for(secret_key)
-  adventcoins_for(secret_key).first(1).at(0)
+  adventcoins(secret_key).first(1).at(0)
 end
 
 def first_adventcoin6_for(secret_key)
-  adventcoins_for(secret_key, '000000').first(1).at(0)
+  adventcoins(secret_key, '000000').first(1).at(0)
 end
