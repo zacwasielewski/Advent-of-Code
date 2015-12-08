@@ -1,89 +1,93 @@
 #!/usr/bin/env ruby
 
-module Day6
+module Day7
   def self.solve_part_1(input)
-    #@circuit = Circuit.new
-    #input.strip.split("\n").each {|str| @circuit.connect(str) }
-    #@circuit.on_count
+    @circuit = Circuit.new
+    input.strip.split("\n").each {|str| @circuit.connect(str) }
+    @circuit[:a]
   end
 
   def self.solve_part_2(input)
-    #@lights = DimmableLights.new
-    #input.strip.split("\n").each {|str| @lights.change(str) }
-    #@lights.total_brightness
   end
 end
 
 class Circuit
+  attr_accessor :wires
+
   def initialize
     @wires = {}
   end
 
-  def get_wire(n)
-    @wires[n.to_sym]
+  def connect(str)
+    wire, signal = parse_connection(str)
+    @wires[wire] = signal
   end
 
-  def connect(str)
-    signal, wire = parse_connection(str)
-    send_signal_to_wire(signal, wire)
+  def [](n)
+    eval_wire_connection @wires[n]
   end
 
   private
 
   def parse_connection(str)
-    gate_str, wire = str.split(' -> ')
-    signal = calc_signal( *parse_gate(gate_str) )
-    [signal, wire.to_sym]
+    signal, wire = str.split(' -> ')
+    [wire.to_sym, parse_signal(signal)]
   end
 
-  def send_signal_to_wire(signal, wire)
-    @wires[wire] = signal
-  end
-
-  def parse_gate(str)
+  def parse_signal(str)
     tokens = str.split(' ')
     case tokens.length
     when 1
-      operands = tokens
+      return coerce_operand(tokens.first)
     when 2
-      operator, operands = tokens
+      operator, op1 = tokens
+      operands = [op1]
     when 3
       op1, operator, op2 = tokens
       operands = [op1, op2]
     end
-    [operator, operands]
+    return [operator, operands.map{|s| coerce_operand s }]
   end
 
-  def calc_signal(operator, operands)
-    op1 = to_signal(operands[0])
-    op2 = to_signal(operands[1])
-    case operator
-    when 'NOT'
-      return bitwise_not op1
-    when 'AND'
-      return op1 & op2
-    when 'OR'
-      return op1 | op2
-    when 'LSHIFT'
-      return op1 << op2
-    when 'RSHIFT'
-      return op1 >> op2
-    else
-      return op1
+  def eval_wire_connection(expr)
+    case expr.class.to_s
+    when 'Symbol'
+      return eval_wire_connection @wires[expr]
+    when 'Fixnum'
+      return expr
+    when 'Array'
+      operator, operands = expr
+      operands.map!{|s|
+        s.instance_of?(Symbol) ? eval_wire_connection(@wires[s]) : s
+      }
+      return calc_gate(operator, operands)
     end
+  end
+
+  def calc_gate(operator, operands)
+    { 'NOT'    => -> { bitwise_not operands[0] },
+      'AND'    => -> { operands[0] &  operands[1] },
+      'OR'     => -> { operands[0] |  operands[1] },
+      'LSHIFT' => -> { operands[0] << operands[1] },
+      'RSHIFT' => -> { operands[0] >> operands[1] },
+      nil      => -> { operands[0] }
+    }[operator].call
+  end
+
+  def coerce_operand(operand)
+    return operand.to_sym if is_wire?  operand
+    return operand.to_i   if is_value? operand
+  end
+
+  def is_value?(signal)
+    signal.class == Fixnum || (signal.class == String && signal.match(/^(\d)+$/))
+  end
+
+  def is_wire?(signal)
+    signal.class == Symbol || (signal.class == String && signal.match(/^[a-z]+$/))
   end
 
   def bitwise_not(num)
     num.to_i.to_s(2).rjust(16, '0').each_char.map{|b| (b.to_i-1).abs}.join.to_i(2)
-  end
-
-  def to_signal(value)
-    case value.class.to_s
-    when 'Fixnum'
-      signal = value
-    when 'String'
-      signal = value.match(/^(\d)+$/) ? value.to_i : @wires[value.to_sym]
-    end
-    signal
   end
 end
