@@ -11,7 +11,7 @@ class TestDay7 < Minitest::Test
   end
 
   def test_part_2
-    #assert_equal 15343601, Day6.solve_part_2(@input)
+    assert_equal 40149, Day7.solve_part_2(@input)
   end
 end
 

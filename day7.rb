@@ -8,6 +8,11 @@ module Day7
   end
 
   def self.solve_part_2(input)
+    @circuit = Circuit.new
+    input.strip.split("\n").each {|str| @circuit.connect(str) }
+    @circuit.connect("956 -> b")
+    @circuit.connect('lx -> a')
+    @circuit[:a]
   end
 end
 
@@ -65,13 +70,20 @@ class Circuit
   end
 
   def calc_gate(operator, operands)
-    { 'NOT'    => -> { bitwise_not operands[0] },
-      'AND'    => -> { operands[0] &  operands[1] },
-      'OR'     => -> { operands[0] |  operands[1] },
-      'LSHIFT' => -> { operands[0] << operands[1] },
-      'RSHIFT' => -> { operands[0] >> operands[1] },
-      nil      => -> { operands[0] }
-    }[operator].call
+    case operator
+    when 'NOT'
+      return bitwise_not operands[0]
+    when 'AND'
+      return operands[0] &  operands[1]
+    when 'OR'
+      return operands[0] |  operands[1]
+    when 'LSHIFT'
+      return operands[0] << operands[1]
+    when 'RSHIFT'
+      return operands[0] >> operands[1]
+    when nil
+      return operands[0]
+    end
   end
 
   def coerce_operand(operand)
