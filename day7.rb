@@ -91,6 +91,14 @@ class Circuit
     return operand.to_i   if is_value? operand
   end
 
+  def is_value?(signal)
+    signal.class == Fixnum || (signal.class == String && signal.match(/^(\d)+$/))
+  end
+
+  def is_wire?(signal)
+    signal.class == Symbol || (signal.class == String && signal.match(/^[a-z]+$/))
+  end
+
   def bitwise_not(num)
     num.to_i.to_s(2).rjust(16, '0').each_char.map{|b| (b.to_i-1).abs}.join.to_i(2)
   end
