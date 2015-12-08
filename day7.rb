@@ -51,7 +51,7 @@ class Circuit
       op1, operator, op2 = tokens
       operands = [op1, op2]
     end
-    return [operator, operands.map{|s| coerce_operand s }]
+    [operator, operands.map{|s| coerce_operand s }]
   end
 
   def eval_wire_connection(expr)
@@ -89,14 +89,6 @@ class Circuit
   def coerce_operand(operand)
     return operand.to_sym if is_wire?  operand
     return operand.to_i   if is_value? operand
-  end
-
-  def is_value?(signal)
-    signal.class == Fixnum || (signal.class == String && signal.match(/^(\d)+$/))
-  end
-
-  def is_wire?(signal)
-    signal.class == Symbol || (signal.class == String && signal.match(/^[a-z]+$/))
   end
 
   def bitwise_not(num)
