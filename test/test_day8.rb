@@ -34,6 +34,17 @@ class TestDay8 < Minitest::Test
       str.length - StringLiteral.new(str).to_s.length
     }.reduce(:+)
 
+    # Part 2
+
+    assert_equal 6,  StringLiteral.new(s1).to_literal.length
+    assert_equal 9,  StringLiteral.new(s2).to_literal.length
+    assert_equal 16, StringLiteral.new(s3).to_literal.length
+    assert_equal 11, StringLiteral.new(s4).to_literal.length
+
+    assert_equal 4, StringLiteral.new(s1).to_literal.length - s1.length
+    assert_equal 4, StringLiteral.new(s2).to_literal.length - s2.length
+    assert_equal 6, StringLiteral.new(s3).to_literal.length - s3.length
+    assert_equal 5, StringLiteral.new(s4).to_literal.length - s4.length
   end
 
   def test_part_1
@@ -41,6 +52,6 @@ class TestDay8 < Minitest::Test
   end
 
   def test_part_2
-    #assert_equal 40149, Day7.solve_part_2(@input)
+    assert_equal 40149, Day8.solve_part_2(@input)
   end
 end
