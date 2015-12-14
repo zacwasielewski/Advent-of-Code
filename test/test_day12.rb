@@ -23,5 +23,6 @@ class TestDay12 < Minitest::Test
   end
 
   def test_part_2
+    assert_equal 0, JSONAbacus.new(@input).sum_without_red
   end
 end
