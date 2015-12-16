@@ -28,6 +28,11 @@ class Reindeer
   end
 
   def distance_after(seconds)
+    quotient, remainder = seconds.divmod(@flight_time + @rest_time)
+    (quotient * @flight_time * @speed) + [remainder * @speed, @flight_time * @speed].min
+  end
+
+  def old_distance_after(seconds)
     time_elapsed = 0
     distance = 0
     current_flight = 0
