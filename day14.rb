@@ -11,8 +11,8 @@ module Day14
   def self.solve_part_2(input, time)
     scores = {}
     reindeer = input.readlines.map {|str|
-      name, speed, flight_time, rest_time = ReindeerTravel.parse_rule str
-      Reindeer.new(name, speed, flight_time, rest_time)
+      #name, speed, flight_time, rest_time = ReindeerTravel.parse_rule(str)
+      Reindeer.new(*ReindeerTravel.parse_rule(str))
     }
     scores = Hash[reindeer.map {|r| [r.name, 0]}]
     for t in 1..time
