@@ -13,8 +13,8 @@ module Day14
     }
     scores = Hash[reindeer.map {|r| [r.name, 0]}]
     for t in 1..time
-      standings = Hash[reindeer.map{|r| [r.name, r.distance_after(t)]}]
-      reindeer.select{|r| standings[r.name] == standings.values.max}.each{|r| scores[r.name] += 1 }
+      distances = Hash[reindeer.map{|r| [r.name, r.distance_after(t)]}]
+      reindeer.select{|r| distances[r.name] == distances.values.max}.each{|r| scores[r.name] += 1 }
     end
     scores.values.max
   end
