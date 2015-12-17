@@ -3,12 +3,23 @@
 module Day14
   def self.solve_part_1(input, time)
     reindeer = input.readlines.map {|str|
-      name, speed, flight_time, rest_time = ReindeerTravel.parse_rule(str)
+      name, speed, flight_time, rest_time = ReindeerTravel.parse_rule str
       Reindeer.new(name, speed, flight_time, rest_time).distance_after(time)
     }.max
   end
 
-  def self.solve_part_2(input)
+  def self.solve_part_2(input, time)
+    scores = {}
+    reindeer = input.readlines.map {|str|
+      name, speed, flight_time, rest_time = ReindeerTravel.parse_rule str
+      Reindeer.new(name, speed, flight_time, rest_time)
+    }
+    scores = Hash[reindeer.map {|r| [r.name, 0]}]
+    for t in 1..time
+      max = reindeer.map{|r| r.distance_after(t)}.max
+      reindeer.select{|r| r.distance_after(t) == max}.each{|r| scores[r.name] += 1 }
+    end
+    scores.values.max
   end
 end
 
@@ -20,6 +31,8 @@ class ReindeerTravel
 end
 
 class Reindeer
+  attr_accessor :name
+
   def initialize(name, speed, flight_time, rest_time)
     @name = name
     @speed = speed.to_i
@@ -27,8 +40,8 @@ class Reindeer
     @rest_time = rest_time.to_i
   end
 
-  def distance_after(seconds)
-    quotient, remainder = seconds.divmod(@flight_time + @rest_time)
+  def distance_after(time)
+    quotient, remainder = time.divmod(@flight_time + @rest_time)
     (quotient * @flight_time * @speed) + [remainder * @speed, @flight_time * @speed].min
   end
 

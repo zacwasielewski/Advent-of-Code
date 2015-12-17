@@ -8,19 +8,15 @@ class TestDay14 < Minitest::Test
   end
 
   def test_sample
-    input = File.open("./input/input_day14_sample.txt")
-    solution = input.readlines.map {|str|
-      name, flight_speed, flight_time, rest_time = ReindeerTravel.parse_rule(str)
-      Reindeer.new(name, flight_speed, flight_time, rest_time).distance_after(1000)
-    }.max
-    assert_equal 1120, solution
+    assert_equal 1120, Day14.solve_part_1(File.open("./input/input_day14_sample.txt"), 1000)
+    assert_equal 689,  Day14.solve_part_2(File.open("./input/input_day14_sample.txt"), 1000)
   end
 
   def test_part_1
-    #assert_equal 2640, Day14.solve_part_1(@input, 2503)
+    assert_equal 2640, Day14.solve_part_1(@input, 2503)
   end
 
   def test_part_2
-    #assert_equal 668, Day13.solve_part_2(@input)
+    assert_equal 1102, Day14.solve_part_2(@input, 2503)
   end
 end
