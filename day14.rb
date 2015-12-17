@@ -3,21 +3,18 @@
 module Day14
   def self.solve_part_1(input, time)
     reindeer = input.readlines.map {|str|
-      name, speed, flight_time, rest_time = ReindeerTravel.parse_rule str
-      Reindeer.new(name, speed, flight_time, rest_time).distance_after(time)
+      Reindeer.new(*ReindeerTravel.parse_rule(str)).distance_after(time)
     }.max
   end
 
   def self.solve_part_2(input, time)
-    scores = {}
     reindeer = input.readlines.map {|str|
-      #name, speed, flight_time, rest_time = ReindeerTravel.parse_rule(str)
       Reindeer.new(*ReindeerTravel.parse_rule(str))
     }
     scores = Hash[reindeer.map {|r| [r.name, 0]}]
     for t in 1..time
-      max = reindeer.map{|r| r.distance_after(t)}.max
-      reindeer.select{|r| r.distance_after(t) == max}.each{|r| scores[r.name] += 1 }
+      standings = Hash[reindeer.map{|r| [r.name, r.distance_after(t)]}]
+      reindeer.select{|r| standings[r.name] == standings.values.max}.each{|r| scores[r.name] += 1 }
     end
     scores.values.max
   end
@@ -43,32 +40,5 @@ class Reindeer
   def distance_after(time)
     quotient, remainder = time.divmod(@flight_time + @rest_time)
     (quotient * @flight_time * @speed) + [remainder * @speed, @flight_time * @speed].min
-  end
-
-  def old_distance_after(seconds)
-    time_elapsed = 0
-    distance = 0
-    current_flight = 0
-    current_rest = 0
-    status = :flying
-    for i in 1..seconds
-      case status
-      when :flying
-        current_flight += 1
-        distance += @speed
-      when :resting
-        current_rest += 1
-      end
-
-      if current_flight == @flight_time
-        current_flight = 0
-        status = :resting
-      end
-      if current_rest == @rest_time
-        current_rest = 0
-        status = :flying
-      end
-    end
-    distance
   end
 end
